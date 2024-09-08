@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError, timeout } from 'rxjs';
 import { IDictionary } from './idictionary';
 import { DictionaryService } from './dictionary.sevice';
 
@@ -8,18 +8,25 @@ import { DictionaryService } from './dictionary.sevice';
   standalone: true,
   imports: [],
   templateUrl: './dictionary.component.html',
-  styleUrl: './dictionary.component.css'
+  styleUrls: ['./dictionary.component.css']
 })
 export class DictionaryComponent implements OnInit {
   
-  dictionary$:Observable<IDictionary>|undefined;
+  dictionary$: Observable<IDictionary> | undefined;
+  dictionary: IDictionary | undefined;
 
-  constructor(private dictionaryService:DictionaryService){}
+  constructor(private dictionaryService: DictionaryService) {}
+
   ngOnInit(): void {
-    this.dictionary$=this.dictionaryService.dictionary$;
-    console.log(this.dictionary$)
+    this.dictionary$ = this.dictionaryService.dictionary$;
+    // الاشتراك في observable للحصول على البيانات
+    this.dictionary$.subscribe({
+      next: (data) => {
+        this.dictionary = data;
+        console.log('Dictionary data:', this.dictionary);
+        console.log(this.dictionary.word)
+      },
+      error: (err) => console.error('Error fetching dictionary data:', err)
+    });
   }
-  
-
-
 }
