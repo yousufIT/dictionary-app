@@ -12,7 +12,7 @@ import { catchError, throwError } from "rxjs";
 export class DictionaryService{
     constructor(private http: HttpClient) { }
 
-    dictionary$ = this.http.get<IDictionary>("https://api.dictionaryapi.dev/api/v2/entries/en/fuck")
+    dictionary$ = this.http.get<IDictionary>("https://api.dictionaryapi.dev/api/v2/entries/en/hello")
                        .pipe(
                        catchError(this.handleError)
                        );

@@ -1,1 +1,20 @@
-<p>dictionary works!</p>
+<div class="container m-auto mt-5">
+  <div class="col-4">
+      <input type="text" class="form-control" [value]="word" id="word">
+      <button (click)="getData()">Get Data</button>
+  </div>
+  <hr />
+  <tabset #staticTabs>
+      <tab heading="Meanings">
+          <div *ngFor="let item of (dictionary$ | async)?.meanings">
+              <p>{{ item.partOfSpeech}}</p>
+          </div>
+      </tab>
+      <tab heading="Synonyms">
+      </tab>
+      <tab heading="Definitions">
+      </tab>
+      <tab heading="audio">
+      </tab>
+  </tabset>
+</div>
