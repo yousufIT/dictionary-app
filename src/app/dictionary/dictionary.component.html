@@ -1,14 +1,20 @@
 <div class="container m-auto mt-5">
+  <div id="bg" #bg (click)="hideWordsPanel()"></div>
     <div class="custom-search">
     <input type="text" 
             class="custom-search-input" 
             [(ngModel)]="word" id="word" 
-            placeholder="Enter a word">
+            placeholder="Enter a word"
+            (focus)="onFocus(wordsPanel , bg)">
 
     <button class="custom-search-botton"
             (click)="GetData(word)" >
         search
-    </button>  
+    </button> 
+
+    <div #wordsPanel id="wordsPanel">
+     <app-words-panel></app-words-panel>
+    </div> 
     </div>
   <hr />
   <tabset #staticTabs>
