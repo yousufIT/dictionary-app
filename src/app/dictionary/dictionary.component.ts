@@ -6,11 +6,13 @@ import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { CommonModule } from '@angular/common';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { FormsModule } from '@angular/forms';
+import { stopComponent } from "./stop/stop.component";
+import { playComponent } from "./play/play.component";
 
 @Component({
   selector: 'app-dictionary',
   standalone: true,
-  imports: [CommonModule, TabsModule, FormsModule],
+  imports: [CommonModule, TabsModule, FormsModule, stopComponent, playComponent],
   templateUrl: './dictionary.component.html',
   styleUrls: ['./dictionary.component.css']
 })
@@ -46,10 +48,21 @@ export class DictionaryComponent implements OnInit {
       }
     });
   }
-
-  getData() {
-    if (this.dictionary) {
-      console.log(this.dictionary.word);
+  toggleAudio(audioPlayer: HTMLAudioElement,play : HTMLDivElement, stop: HTMLDivElement) {
+    if (audioPlayer.paused) {
+      audioPlayer.play();
+      this.changAudioIcone(stop,play)
+    } else {
+      audioPlayer.pause();
+      this.changAudioIcone(play,stop)
+      
     }
+  }
+
+  // دالة تُستدعى عند انتهاء الصوت لتغيير النص إلى "ابدأ"
+  changAudioIcone(play : HTMLDivElement, stop: HTMLDivElement) {
+    stop.style.display="none"  
+    play.style.display="inline"  
+
   }
 }

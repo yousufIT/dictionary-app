@@ -1,20 +1,100 @@
 <div class="container m-auto mt-5">
-  <div class="col-4">
-      <input type="text" class="form-control" [value]="word" id="word">
-      <button (click)="getData()">Get Data</button>
-  </div>
+    <div class="custom-search">
+    <input type="text" 
+            class="custom-search-input" 
+            [(ngModel)]="word" id="word" 
+            placeholder="Enter a word">
+
+    <button class="custom-search-botton"
+            (click)="GetData(word)" >
+        search
+    </button>  
+    </div>
   <hr />
   <tabset #staticTabs>
-      <tab heading="Meanings">
-          <div *ngFor="let item of (dictionary$ | async)?.meanings">
-              <p>{{ item.partOfSpeech}}</p>
+    <tab heading="Meanings"> 
+        <div *ngIf="dictionary?.meanings?.length; 
+                else meaning_notFound">
+
+          <div *ngFor="let meaning of dictionary?.meanings">
+            <p>
+                <strong>Part of Speech:</strong> 
+                {{ meaning.partOfSpeech }}
+            </p>
+
+            <ul>
+              <li *ngFor="let definition of meaning.definitions">
+                <strong>Definition:</strong> 
+                {{ definition.definitionText }}
+
+                <br />
+                <strong>Example:</strong> 
+                {{ definition.example }}
+
+              </li>
+            </ul>
           </div>
+        </div>
+        <ng-template #meaning_notFound>
+          <p>No meanings available.</p>
+        </ng-template>
       </tab>
       <tab heading="Synonyms">
+        <div *ngIf="dictionary?.synonyms?.length;
+                else synonym_notFound">
+
+          <p>{{ dictionary?.synonyms?.join(', ') }}</p>
+        </div>
+        <ng-template #synonym_notFound>
+          <p>No synonyms available.</p>
+        </ng-template>
       </tab>
       <tab heading="Definitions">
+        <div *ngIf="dictionary?.meanings?.length; 
+                else definition_notFound">
+
+          <div *ngFor="let meaning of dictionary?.meanings">
+            <strong>
+                {{ meaning.partOfSpeech }}:
+            </strong>
+            <ul>
+              <li *ngFor="let def of meaning.definitions">
+                {{ def.definitionText }}
+            </li>
+            </ul>
+          </div>
+        </div>
+        <ng-template #definition_notFound>
+          <p>No definitions available.</p>
+        </ng-template>
+      </tab> 
+      <tab heading="Audio">
+        <div *ngIf="dictionary?.audioUrls?.length; 
+                else audio_notFound">
+
+            <div style="display: inline;"  *ngFor="let audioUrl of dictionary?.audioUrls"> 
+                <audio #audioPlayer
+                        (ended)="changAudioIcone(play,stop)"
+                        [src]="audioUrl" >
+                </audio>
+                <button style="border: none; background: none;" 
+                        (click)="toggleAudio(audioPlayer,play,stop)" 
+                        class="m-1">
+
+                    <div #play  style="display: inline;" >
+                        <app-play></app-play>
+                    </div>          
+                    <div #stop style="display: none;">
+                        <app-stop></app-stop>
+                    </div>
+                 </button> 
+             </div>
+
+
+        </div>
+        <ng-template #audio_notFound>
+          <p>No audio available.</p>
+        </ng-template>
       </tab>
-      <tab heading="audio">
-      </tab>
-  </tabset>
-</div>
+    </tabset>
+  </div>

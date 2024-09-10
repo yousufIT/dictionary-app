@@ -1,0 +1,28 @@
+.custom-search {
+    position: relative;
+    width: 300px;
+  }
+  .custom-search-input {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 100px;
+    padding: 10px 100px 10px 20px; 
+    line-height: 1;
+    box-sizing: border-box;
+    outline: none;
+  }
+  .custom-search-botton {
+    position: absolute;
+    right: 3px; 
+    top: 2px;
+    border: 0;
+    background: #0c5cd4;
+    color: #fff;
+    outline: none;
+    margin: 0;
+    padding: 2px;
+    border-radius: 100px;
+    z-index: 0;
+    width: 80px;
+    height: 39px;
+  }
