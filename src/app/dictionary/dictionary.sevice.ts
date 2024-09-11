@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { IDictionary, IMeaning } from './idictionary'; 
 
 @Injectable({
@@ -11,9 +11,21 @@ export class DictionaryService {
   constructor(private http: HttpClient) { }
 
   //this for send the request with word
-  getDictionaryData(word: string): Observable<IDictionary> {
+  getDictionaryData(word: string,bg : HTMLDivElement): Observable<IDictionary> {
+    bg.style.display="none"  
     return this.http.get<any>(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`).pipe(
-      map(apiResponse => mapApiResponseToDictionary(apiResponse[0])) //this for mapping the response like we want in interfaces
+      map(apiResponse => mapApiResponseToDictionary(apiResponse[0])), //this for mapping the response like we want in interfaces
+      catchError(() => {
+        // If error occurs, fetch data from the local JSON file as a fallback
+        return this.handillingError(bg);
+      })
+    );
+  }
+ 
+  private handillingError(bg : HTMLDivElement): Observable<IDictionary> {
+    bg.style.display="inline" 
+    return this.http.get<any>('api/empty.json').pipe(
+      map(apiResponse => mapApiResponseToDictionary(apiResponse[0]))
     );
   }
 }

@@ -1,3 +1,4 @@
+
 export interface IDictionary {
     word: string;
     phonetic: string;

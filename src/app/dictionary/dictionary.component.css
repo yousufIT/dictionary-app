@@ -45,13 +45,14 @@
   }
   #bg{
     display: none;
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
     z-index: 0;
     background-color: #fff;
-    opacity: .5;
-    
+    text-align: center;
+    padding-top: 120px;
+    font-size: 30px;
   }

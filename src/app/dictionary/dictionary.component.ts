@@ -8,12 +8,11 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { FormsModule } from '@angular/forms';
 import { stopComponent } from "./stop/stop.component";
 import { playComponent } from "./play/play.component";
-import { wordsPanelComponent } from './words-panel/words-panel.component';
 
 @Component({
   selector: 'app-dictionary',
   standalone: true,
-  imports: [CommonModule, TabsModule, FormsModule, stopComponent, playComponent, wordsPanelComponent],
+  imports: [CommonModule, TabsModule, FormsModule, stopComponent, playComponent],
   templateUrl: './dictionary.component.html',
   styleUrls: ['./dictionary.component.css']
 })
@@ -25,7 +24,9 @@ export class DictionaryComponent implements OnInit {
   word: string = "";
   wordsPanel!:HTMLDivElement;
   bg!:HTMLDivElement;
+  isViewTabset=true
   constructor(private dictionaryService: DictionaryService) {}
+
 
   ngOnInit(): void {}
 
@@ -37,8 +38,9 @@ export class DictionaryComponent implements OnInit {
     }
   }
 //this for get the data from service to component 
-  GetData(word: string): void {
-    this.dictionary$ = this.dictionaryService.getDictionaryData(word);
+  GetData(bg : HTMLDivElement): void {
+    
+    this.dictionary$ = this.dictionaryService.getDictionaryData(this.word,bg);
     this.dictionary$.subscribe({
       next: (data) => {
         this.dictionary = data;
@@ -47,7 +49,6 @@ export class DictionaryComponent implements OnInit {
         console.error('Error fetching dictionary data:', err);
       }
     });
-    this.hideWordsPanel();
   }
   toggleAudio(audioPlayer: HTMLAudioElement,play : HTMLDivElement, stop: HTMLDivElement) {
     if (audioPlayer.paused) {
@@ -63,27 +64,6 @@ export class DictionaryComponent implements OnInit {
   changAudioIcone(play : HTMLDivElement, stop: HTMLDivElement) {
     stop.style.display="none"  
     play.style.display="inline"  
-
-  }
-
-
-  // اخفاء و اظهار بانل الكلمات 
-  onFocus(wordsPanel: HTMLDivElement ,bg : HTMLDivElement) {
-    this.wordsPanel=wordsPanel;
-    this.wordsPanel.style.display="inline"
-    this.bg=bg;
-    bg.style.display="inline";
-    console.log('Text box is focused!');
-  }
-  hideWordsPanel() {
-    this.wordsPanel.style.display="none"  
-    this.bg.style.display="none";
-    console.log('Text box lost focus!');
-  }
-
-
-  addWordToArry(word:string){
-
   }
 
 
